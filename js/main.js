@@ -28,64 +28,64 @@ const playGrid = document.getElementById('playGrid');
 const roundNumber = document.getElementById('roundNum');
 
   /*----- event listeners -----*/
-// playGrid.addEventListener('click', handleStartGame);
+playGrid.addEventListener('click', handleStartGame);
 
 
 
   /*----- functions -----*/
-// function handleStartGame(evt) {
-//   let eventTarget = evt.target;
-//   if (eventTarget.id !== 'startBtn') {
-//     return;
-//   } else {
-//     console.log('Only the button was clicked!')
-//     init();
-//     startButton.style.visibility = 'hidden';
-//   }
-// }
+function handleStartGame(evt) {
+  let eventTarget = evt.target;
+  if (eventTarget.id !== 'startBtn') {
+    return;
+  } else {
+    console.log('Only the button was clicked!')
+    init();
+    startButton.style.visibility = 'hidden';
+  }
+}
 
 
 
-// function init() {
-//   computerChoice = [];
-//   playerChoice = [];
-//   round = 1;
-//   roundWinner = null;
-//   gameWinner = null;
-//   console.log('Init is working!');
-//   redButton.addEventListener('click', handleClick);
-//   blueButton.addEventListener('click', handleClick);
-//   yellowButton.addEventListener('click', handleClick);
-//   greenButton.addEventListener('click', handleClick);
-//   setTimeout(render, 1000);
-//   // render();
-// }
+function init() {
+  computerChoice = [];
+  playerChoice = [];
+  round = 1;
+  roundWinner = null;
+  gameWinner = null;
+  console.log('Init is working!');
+  redButton.addEventListener('click', handleClick);
+  blueButton.addEventListener('click', handleClick);
+  yellowButton.addEventListener('click', handleClick);
+  greenButton.addEventListener('click', handleClick);
+  setTimeout(render, 1000);
+  // render();
+}
 
-// function handleClick(evt) {
-//   const findId = evt.target;
-//   if (findId.id === 'redBtn') {
-//     redSound.play();
-//     playerChoice.push(COLORS.red);
-//   } else if (findId.id === 'blueBtn') {
-//     blueSound.play();
-//     playerChoice.push(COLORS.blue);
-//   } else if (findId.id === 'yellowBtn') {
-//     yellowSound.play();
-//     playerChoice.push(COLORS.yellow);
-//   } else {
-//     greenSound.play();
-//     playerChoice.push(COLORS.green);
-//   }
-//   console.log(findId);
-//   console.log(playerChoice);
-// } 
+function handleClick(evt) {
+  const findId = evt.target;
+  if (findId.id === 'redBtn') {
+    redSound.play();
+    playerChoice.push(COLORS.red);
+  } else if (findId.id === 'blueBtn') {
+    blueSound.play();
+    playerChoice.push(COLORS.blue);
+  } else if (findId.id === 'yellowBtn') {
+    yellowSound.play();
+    playerChoice.push(COLORS.yellow);
+  } else {
+    greenSound.play();
+    playerChoice.push(COLORS.green);
+  }
+  console.log(findId);
+  console.log(playerChoice);
+} 
 
 
-// function render() {
-//   console.log('Render is working!');
-//   renderRound();
-//   renderComputerChoice();
-// }
+function render() {
+  console.log('Render is working!');
+  // renderRound();
+  // renderComputerChoice();
+}
 
 // function renderRound() {
 //   roundNumber.innerText = 'Round 1';
