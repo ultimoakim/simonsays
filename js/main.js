@@ -44,8 +44,6 @@ function handleStartGame(evt) {
   }
 }
 
-
-
 function init() {
   computerChoice = [];
   playerChoice = [];
@@ -83,20 +81,20 @@ function handleClick(evt) {
 
 function render() {
   console.log('Render is working!');
-  // renderRound();
-  // renderComputerChoice();
+  renderRound();
+  renderComputerChoice();
 }
 
-// function renderRound() {
-//   roundNumber.innerText = 'Round 1';
-// }
+function renderRound() {
+  roundNumber.innerText = 'Round 1';
+}
 
-// function renderComputerChoice() {
-//   let compChoiceNum = Math.floor(Math.random() * 4);
-//   computerChoice.push(compChoiceNum);
-//   console.log(computerChoice);
-//   computerChoice.forEach(compNumPrint);
-// }
+function renderComputerChoice() {
+  let compChoiceNum = Math.floor(Math.random() * 4);
+  computerChoice.push(compChoiceNum);
+  console.log(computerChoice);
+  computerChoice.forEach(compNumPrint);
+}
 
 // function compNumPrint(num) {
 //   if (num === COLORS.red) {
