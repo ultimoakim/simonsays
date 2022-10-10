@@ -38,7 +38,7 @@ function handleStartGame(evt) {
   if (eventTarget.id !== 'startBtn') {
     return;
   } else {
-    console.log('Only the button was clicked!')
+    console.log('Only the button was clicked! The button is fully working and operational, at your service!')
     init();
     startButton.style.visibility = 'hidden';
   }
@@ -55,23 +55,30 @@ function init() {
   blueButton.addEventListener('click', handleClick);
   yellowButton.addEventListener('click', handleClick);
   greenButton.addEventListener('click', handleClick);
-  setTimeout(render, 1000);
-  // render();
+  render();
 }
 
 function handleClick(evt) {
   const findId = evt.target;
   if (findId.id === 'redBtn') {
     redSound.play();
+    redButton.style.backgroundColor = 'red';
+    setTimeout(redDarker, 300);
     playerChoice.push(COLORS.red);
   } else if (findId.id === 'blueBtn') {
     blueSound.play();
+    blueButton.style.backgroundColor = 'blue';
+    setTimeout(blueDarker, 300);
     playerChoice.push(COLORS.blue);
   } else if (findId.id === 'yellowBtn') {
     yellowSound.play();
+    yellowButton.style.backgroundColor = 'yellow';
+    setTimeout(yellowDarker, 300);
     playerChoice.push(COLORS.yellow);
   } else {
     greenSound.play();
+    greenButton.style.backgroundColor = 'green';
+    setTimeout(greenDarker, 300);
     playerChoice.push(COLORS.green);
   }
   console.log(findId);
@@ -82,7 +89,7 @@ function handleClick(evt) {
 function render() {
   console.log('Render is working!');
   renderRound();
-  renderComputerChoice();
+  setTimeout(renderComputerChoice, 1000);
 }
 
 function renderRound() {
@@ -96,37 +103,37 @@ function renderComputerChoice() {
   computerChoice.forEach(compNumPrint);
 }
 
-// function compNumPrint(num) {
-//   if (num === COLORS.red) {
-//     redSound.play();
-//     redButton.style.backgroundColor = 'red'
-//     setTimeout(redDarker, 300);
-//   } else if (num === COLORS.blue) {
-//     blueSound.play();
-//     blueButton.style.backgroundColor = 'blue';
-//     setTimeout(blueDarker, 300);
-//   } else if (num === COLORS.yellow) {
-//     yellowSound.play();
-//     yellowButton.style.backgroundColor = 'yellow';
-//     setTimeout(yellowDarker, 300);
-//   } else {
-//     greenSound.play();
-//     greenButton.style.backgroundColor = 'green';
-//     setTimeout(greenDarker, 300);
-//   }
-// }
+function compNumPrint(num) {
+  if (num === COLORS.red) {
+    redSound.play();
+    redButton.style.backgroundColor = 'red';
+    setTimeout(redDarker, 300);
+  } else if (num === COLORS.blue) {
+    blueSound.play();
+    blueButton.style.backgroundColor = 'blue';
+    setTimeout(blueDarker, 300);
+  } else if (num === COLORS.yellow) {
+    yellowSound.play();
+    yellowButton.style.backgroundColor = 'yellow';
+    setTimeout(yellowDarker, 300);
+  } else {
+    greenSound.play();
+    greenButton.style.backgroundColor = 'green';
+    setTimeout(greenDarker, 300);
+  }
+}
 
-// function redDarker() {
-//   redButton.style.backgroundColor = '#660000';
-// }
-// function blueDarker() {
-//   blueButton.style.backgroundColor = '#000066';
-// }
-// function yellowDarker() {
-//   yellowButton.style.backgroundColor = '#666600';
-// }
-// function greenDarker() {
-//   greenButton.style.backgroundColor = '#003300';
-// }
+function redDarker() {
+  redButton.style.backgroundColor = '#660000';
+}
+function blueDarker() {
+  blueButton.style.backgroundColor = '#000066';
+}
+function yellowDarker() {
+  yellowButton.style.backgroundColor = '#666600';
+}
+function greenDarker() {
+  greenButton.style.backgroundColor = '#003300';
+}
 
 
