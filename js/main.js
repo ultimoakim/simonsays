@@ -9,14 +9,14 @@ const COLORS = {
   blue: 1,
   yellow: 2,
   green: 3
-}
+};
 
   /*----- state variables -----*/
 let playerChoice;
 let computerChoice;
 let round;
 let roundWinner;
-let gameWinner;
+
 
   /*----- cached elements  -----*/
 const redButton = document.getElementById('redBtn');
@@ -26,10 +26,11 @@ const greenButton = document.getElementById('greenBtn');
 const startButton = document.getElementById('startBtn');
 const playGrid = document.getElementById('playGrid');
 const roundNumber = document.getElementById('roundNum');
+const againButton = document.getElementById('againBtn');
 
   /*----- event listeners -----*/
 playGrid.addEventListener('click', handleStartGame);
-
+againButton.addEventListener('click', handlePlayAgain);
 
 
   /*----- functions -----*/
@@ -48,8 +49,6 @@ function init() {
   computerChoice = [];
   playerChoice = [];
   round = 1;
-  roundWinner = null;
-  gameWinner = null;
   console.log('Init is working!');
   redButton.addEventListener('click', handleClick);
   blueButton.addEventListener('click', handleClick);
@@ -62,27 +61,39 @@ function handleClick(evt) {
   const findId = evt.target;
   if (findId.id === 'redBtn') {
     redSound.play();
+    redSound.currentTime = 0;
     redButton.style.backgroundColor = 'red';
-    setTimeout(redDarker, 300);
+    setTimeout(redDarker, 200);
     playerChoice.push(COLORS.red);
   } else if (findId.id === 'blueBtn') {
     blueSound.play();
+    blueSound.currentTime = 0;
     blueButton.style.backgroundColor = 'blue';
-    setTimeout(blueDarker, 300);
+    setTimeout(blueDarker, 200);
     playerChoice.push(COLORS.blue);
   } else if (findId.id === 'yellowBtn') {
     yellowSound.play();
+    yellowSound.currentTime = 0;
     yellowButton.style.backgroundColor = 'yellow';
-    setTimeout(yellowDarker, 300);
+    setTimeout(yellowDarker, 200);
     playerChoice.push(COLORS.yellow);
   } else {
     greenSound.play();
+    greenSound.currentTime = 0;
     greenButton.style.backgroundColor = 'green';
-    setTimeout(greenDarker, 300);
+    setTimeout(greenDarker, 200);
     playerChoice.push(COLORS.green);
   }
+  roundWinner = getRoundWinner();
   console.log(findId);
   console.log(playerChoice);
+  if (roundWinner === 0) {
+    render();
+    round = round + 1;
+    playerChoice = [];
+  } else if (roundWinner === 1) {
+    return;
+  }
 } 
 
 
@@ -93,7 +104,7 @@ function render() {
 }
 
 function renderRound() {
-  roundNumber.innerText = 'Round 1';
+    roundNumber.innerText = `Round ${round}`;
 }
 
 function renderComputerChoice() {
@@ -103,26 +114,35 @@ function renderComputerChoice() {
   computerChoice.forEach(compNumPrint);
 }
 
-function compNumPrint(num) {
-  if (num === COLORS.red) {
-    redSound.play();
-    redButton.style.backgroundColor = 'red';
-    setTimeout(redDarker, 300);
-  } else if (num === COLORS.blue) {
-    blueSound.play();
-    blueButton.style.backgroundColor = 'blue';
-    setTimeout(blueDarker, 300);
-  } else if (num === COLORS.yellow) {
-    yellowSound.play();
-    yellowButton.style.backgroundColor = 'yellow';
-    setTimeout(yellowDarker, 300);
-  } else {
-    greenSound.play();
-    greenButton.style.backgroundColor = 'green';
-    setTimeout(greenDarker, 300);
-  }
-}
+// Callback function for each number that computerChoice array prints out
+function compNumPrint(num, index) {
+  setTimeout(function() {
+    if (num === COLORS.red) {
+      redSound.play();
+      redSound.currentTime = 0;
+      redButton.style.backgroundColor = 'red';
+      setTimeout(redDarker, 200);
+    } else if (num === COLORS.blue) {
+      blueSound.play();
+      blueSound.currentTime = 0;
+      blueButton.style.backgroundColor = 'blue';
+      setTimeout(blueDarker, 200);
+    } else if (num === COLORS.yellow) {
+      yellowSound.play();
+      yellowSound.currentTime = 0;
+      yellowButton.style.backgroundColor = 'yellow';
+      setTimeout(yellowDarker, 200);
+    } else {
+      greenSound.play();
+      greenSound.currentTime = 0;
+      greenButton.style.backgroundColor = 'green';
+      setTimeout(greenDarker, 200);
+    }
+  }, index * 300);
+};
 
+
+// Callback functions to make the colors darker again
 function redDarker() {
   redButton.style.backgroundColor = '#660000';
 }
@@ -134,6 +154,35 @@ function yellowDarker() {
 }
 function greenDarker() {
   greenButton.style.backgroundColor = '#003300';
+}
+
+function getRoundWinner() {
+  if (playerChoice.length === computerChoice.length) {
+    roundWinnerNum = arrayEquals(computerChoice, playerChoice);
+    return roundWinnerNum;
+  } else if (playerChoice.length !== computerChoice.length) {
+    roundWinnerNum = valueEquals(playerChoice, computerChoice);
+    return roundWinnerNum;
+  }
+}
+
+function arrayEquals(a, b) {
+  if (Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index])) {
+    console.log(`You got it! Next round!`);
+    return 0;
+  } else {
+    console.log(`You LOSE!`);
+    return 1;
+  }
+}
+
+function valueEquals(a, b) {
+  if (Array.isArray(a) && Array.isArray(b) && a.every((val, index) => val === b[index])) {
+    console.log(`You're on a streak! Keep it up!`);
+  } else {
+    console.log(`You LOSE!`);
+    return 1;
+  }
 }
 
 
