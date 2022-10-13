@@ -1,4 +1,4 @@
-  /*----- constants -----*/
+/*----- constants -----*/
 const redSound = new Audio('/simon_sounds/cnote.wav');
 const blueSound = new Audio('/simon_sounds/enote.wav');
 const yellowSound = new Audio('/simon_sounds/gnote.wav');
@@ -11,14 +11,16 @@ const COLORS = {
   green: 3
 };
 
-  /*----- state variables -----*/
+/*----- state variables -----*/
 let playerChoice;
 let computerChoice;
 let round;
 let roundWinner;
+let clickDelayer;
+let counterNum;
+let pauseNum;
 
-
-  /*----- cached elements  -----*/
+/*----- cached elements  -----*/
 const redButton = document.getElementById('redBtn');
 const blueButton = document.getElementById('blueBtn');
 const yellowButton = document.getElementById('yellowBtn');
@@ -27,21 +29,27 @@ const startButton = document.getElementById('startBtn');
 const playGrid = document.getElementById('playGrid');
 const roundNumber = document.getElementById('roundNum');
 const againButton = document.getElementById('againBtn');
+const wholeBody = document.getElementById('wholeBody');
+const reportMessage = document.getElementById('reportMsg');
+againButton.style.visibility = 'hidden';
 
-  /*----- event listeners -----*/
+/*----- event listeners -----*/
 playGrid.addEventListener('click', handleStartGame);
-againButton.addEventListener('click', handlePlayAgain);
+againButton.addEventListener('click', handleAgain);
 
-
-  /*----- functions -----*/
+/*----- functions -----*/
 function handleStartGame(evt) {
   let eventTarget = evt.target;
   if (eventTarget.id !== 'startBtn') {
     return;
   } else {
-    console.log('Only the button was clicked! The button is fully working and operational, at your service!')
     init();
     startButton.style.visibility = 'hidden';
+    reportMessage.style.visibility = 'hidden';
+    redButton.addEventListener('click', handleClick);
+    blueButton.addEventListener('click', handleClick);
+    yellowButton.addEventListener('click', handleClick);
+    greenButton.addEventListener('click', handleClick);
   }
 }
 
@@ -49,35 +57,51 @@ function init() {
   computerChoice = [];
   playerChoice = [];
   round = 1;
-  console.log('Init is working!');
-  redButton.addEventListener('click', handleClick);
-  blueButton.addEventListener('click', handleClick);
-  yellowButton.addEventListener('click', handleClick);
-  greenButton.addEventListener('click', handleClick);
+  counterNum = 0;
+  pauseNum = 0;
+  roundWinner = null;
   render();
 }
 
 function handleClick(evt) {
+  if (counterNum !== computerChoice.length || counterNum === 0) return;
+  if (pauseNum === 0) return;
+  reportMessage.style.visibility = 'hidden';
+  if (roundWinner === 1) {
+    reportMessage.style.visibility = 'visible';
+  }
   const findId = evt.target;
   if (findId.id === 'redBtn') {
+    if (roundWinner === 1) {
+      return;
+    }
     redSound.play();
     redSound.currentTime = 0;
     redButton.style.backgroundColor = 'red';
     setTimeout(redDarker, 200);
     playerChoice.push(COLORS.red);
   } else if (findId.id === 'blueBtn') {
+    if (roundWinner === 1) {
+      return;
+    }
     blueSound.play();
     blueSound.currentTime = 0;
     blueButton.style.backgroundColor = 'blue';
     setTimeout(blueDarker, 200);
     playerChoice.push(COLORS.blue);
   } else if (findId.id === 'yellowBtn') {
+    if (roundWinner === 1) {
+      return;
+    }
     yellowSound.play();
     yellowSound.currentTime = 0;
     yellowButton.style.backgroundColor = 'yellow';
     setTimeout(yellowDarker, 200);
     playerChoice.push(COLORS.yellow);
   } else {
+    if (roundWinner === 1) {
+      return;
+    }
     greenSound.play();
     greenSound.currentTime = 0;
     greenButton.style.backgroundColor = 'green';
@@ -85,38 +109,55 @@ function handleClick(evt) {
     playerChoice.push(COLORS.green);
   }
   roundWinner = getRoundWinner();
-  console.log(findId);
-  console.log(playerChoice);
   if (roundWinner === 0) {
-    render();
     round = round + 1;
     playerChoice = [];
+    counterNum = 0;
+    pauseNum = 0;
+    reportMessage.style.visibility = 'visible';
+    reportMessage.innerText = 'CORRECT! Next round!'
+    render();
   } else if (roundWinner === 1) {
-    return;
+    roundNumber.innerText = `WRONG! You LOSE!`;
+    againButton.style.visibility = 'visible';
+    reportMessage.style.visibility = 'visible';
+    reportMessage.innerText = `You got up until Round ${round}!`
   }
-} 
-
+}
 
 function render() {
-  console.log('Render is working!');
   renderRound();
+  setTimeout(renderHideReport, 1000);
   setTimeout(renderComputerChoice, 1000);
+  setTimeout(renderPauser, computerChoice.length * 300 + 1800);
+}
+
+function renderHideReport() {
+  reportMessage.style.visibility = 'hidden';
 }
 
 function renderRound() {
-    roundNumber.innerText = `Round ${round}`;
+  roundNumber.innerText = `Round ${round}`;
 }
 
 function renderComputerChoice() {
   let compChoiceNum = Math.floor(Math.random() * 4);
   computerChoice.push(compChoiceNum);
-  console.log(computerChoice);
   computerChoice.forEach(compNumPrint);
+}
+
+// This function is used as a guard to stop the player from clicking on the circles IMMEDIATELY after the computer has finished printing.
+function renderPauser() {
+  pauseNum = 1;
+  reportMessage.style.visibility = 'visible';
+  reportMessage.innerText = 'Alright! Your turn!'
 }
 
 // Callback function for each number that computerChoice array prints out
 function compNumPrint(num, index) {
-  setTimeout(function() {
+  setTimeout(function () {
+    counterNum = counterNum + 1;
+    pauseNum = 0;
     if (num === COLORS.red) {
       redSound.play();
       redSound.currentTime = 0;
@@ -141,7 +182,6 @@ function compNumPrint(num, index) {
   }, index * 300);
 };
 
-
 // Callback functions to make the colors darker again
 function redDarker() {
   redButton.style.backgroundColor = '#660000';
@@ -156,6 +196,7 @@ function greenDarker() {
   greenButton.style.backgroundColor = '#003300';
 }
 
+// Function inside of event listener to get the winner value
 function getRoundWinner() {
   if (playerChoice.length === computerChoice.length) {
     roundWinnerNum = arrayEquals(computerChoice, playerChoice);
@@ -166,23 +207,45 @@ function getRoundWinner() {
   }
 }
 
+// Function that gives a winner value based on if the arrays are the same
 function arrayEquals(a, b) {
   if (Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index])) {
-    console.log(`You got it! Next round!`);
     return 0;
   } else {
-    console.log(`You LOSE!`);
     return 1;
   }
 }
 
+// Function that gives a winner value based on if the elements in the array are the same
 function valueEquals(a, b) {
   if (Array.isArray(a) && Array.isArray(b) && a.every((val, index) => val === b[index])) {
-    console.log(`You're on a streak! Keep it up!`);
+    return 7; // 7 doesn't actually do anything. I just put it here so that it's not 0, at least. Because if we returned 0, then render() would run again, and we don't want that to happen when we're determining if the two VALUES of both arrays match each other.
   } else {
-    console.log(`You LOSE!`);
     return 1;
   }
 }
 
+// Function that will start the play again button
+function handleAgain() {
+  againButton.style.visibility = 'hidden';
+  reportMessage.style.visibility = 'hidden';
+  init();
+  redButton.addEventListener('click', handleClick);
+  blueButton.addEventListener('click', handleClick);
+  yellowButton.addEventListener('click', handleClick);
+  greenButton.addEventListener('click', handleClick);
+}
 
+// What my getRoundWinner() function looked like before;
+// function getRoundWinner() {
+//   for (let i = 0; i < computerChoice.length; i++) {
+//     if (playerChoice[i] === computerChoice[i] && playerChoice.length === computerChoice.length) {
+//       console.log(`You won!`);
+//       return 0;
+//     } else {
+//       console.log(`You LOSE!`);
+//     }
+//   }
+// }
+
+// This above function did not work, for obvious reasons.

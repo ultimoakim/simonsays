@@ -11,19 +11,22 @@
 <body id="wholeBody">
     <div id="playGrid">
       <main id="simonTitle">
-        <h1>Simon Says</h1>
-        <h3 id="roundNum">TURN YOUR SOUND DOWN! It's pretty loud, I tell ya! Don't say I didn't warn ya!</h3>
+        <h1 class="simonSays">Simon Says</h1>
+        <h3 id="roundNum" class="simonSays">Please turn your sound down!</h3>
       </main>
-      <div id="redBtn"></div>
-      <div id="blueBtn"></div>
-      <div id="yellowBtn"></div>
-      <div id="greenBtn"></div>
+      <div id="redBtn" class="colorBtn"></div>
+      <div id="blueBtn" class="colorBtn"></div>
+      <div id="yellowBtn" class="colorBtn"></div>
+      <div id="greenBtn" class="colorBtn"></div>
       <main id="gameBtn">
-        <button id="startBtn">Start Game</button>
-        <button id="againBtn">Play again!</button>
+        <button id="startBtn" class="functionBtn">Start Game</button>
+        <button id="againBtn" class="functionBtn">Play again!</button>
       </main>
       <section id="chances">
-        <p>Chances Remaining: 3</p>
+        <p></p>
+      </section>
+      <section id="reportBody">
+        <h3 id="reportMsg">Click start to begin!</h3>
       </section>
     </div>
   </body>
