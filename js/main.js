@@ -1,8 +1,8 @@
 /*----- constants -----*/
-const redSound = new Audio('/simon_sounds/cnote.wav');
-const blueSound = new Audio('/simon_sounds/enote.wav');
-const yellowSound = new Audio('/simon_sounds/gnote.wav');
-const greenSound = new Audio('/simon_sounds/chighnote.wav');
+const redSound = new Audio('simon_sounds/cnote.wav');
+const blueSound = new Audio('simon_sounds/enote.wav');
+const yellowSound = new Audio('simon_sounds/gnote.wav');
+const greenSound = new Audio('simon_sounds/chighnote.wav');
 
 const COLORS = {
   red: 0,
