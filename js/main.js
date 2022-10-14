@@ -38,6 +38,7 @@ playGrid.addEventListener('click', handleStartGame);
 againButton.addEventListener('click', handleAgain);
 
 /*----- functions -----*/
+// Start button event listener
 function handleStartGame(evt) {
   let eventTarget = evt.target;
   if (eventTarget.id !== 'startBtn') {
@@ -115,13 +116,14 @@ function handleClick(evt) {
     counterNum = 0;
     pauseNum = 0;
     reportMessage.style.visibility = 'visible';
+    reportMessage.style.color = 'rgb(102, 255, 51)';
     reportMessage.innerText = 'CORRECT! Next round!'
     render();
   } else if (roundWinner === 1) {
     roundNumber.innerText = `WRONG! You LOSE!`;
     againButton.style.visibility = 'visible';
     reportMessage.style.visibility = 'visible';
-    reportMessage.innerText = `You got up until Round ${round}!`
+    reportMessage.innerText = `You survived until Round ${round}!`
   }
 }
 
@@ -151,6 +153,7 @@ function renderPauser() {
   pauseNum = 1;
   reportMessage.style.visibility = 'visible';
   reportMessage.innerText = 'Alright! Your turn!'
+  reportMessage.style.color = "aliceblue";
 }
 
 // Callback function for each number that computerChoice array prints out
@@ -225,7 +228,7 @@ function valueEquals(a, b) {
   }
 }
 
-// Function that will start the play again button
+// Function that will start the "Play again" button
 function handleAgain() {
   againButton.style.visibility = 'hidden';
   reportMessage.style.visibility = 'hidden';
@@ -235,17 +238,3 @@ function handleAgain() {
   yellowButton.addEventListener('click', handleClick);
   greenButton.addEventListener('click', handleClick);
 }
-
-// What my getRoundWinner() function looked like before;
-// function getRoundWinner() {
-//   for (let i = 0; i < computerChoice.length; i++) {
-//     if (playerChoice[i] === computerChoice[i] && playerChoice.length === computerChoice.length) {
-//       console.log(`You won!`);
-//       return 0;
-//     } else {
-//       console.log(`You LOSE!`);
-//     }
-//   }
-// }
-
-// This above function did not work, for obvious reasons.
