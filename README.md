@@ -10,7 +10,7 @@
 
 ### [CLICK HERE TO DEMO](https://ultimoakim.github.io/simonsays/)
 
-##### Created by Joonsik Andy Kim
+##### Created by Andy Kim
 
 [![GitHub Badge](https://img.shields.io/badge/-@ultimoakim-junglegreen?style=flat&logo=GitHub&logoColor=black)](https://github.com/ultimoakim)
 [![LinkedIn Badge](https://img.shields.io/badge/-@ultimoakim-blue?style=flat&logo=Linkedin&logoColor=black)](https://www.linkedin.com/in/ultimoakim/)
